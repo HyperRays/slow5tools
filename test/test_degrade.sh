@@ -158,6 +158,12 @@ if [ -z "$bigend" ]; then
     $SLOW5TOOLS degrade "$RAW_DIR/promr9dna4khz_lsk110.blow5" -o "$OUT_DIR/promr9dna4khz_lsk110_auto.blow5" || die "$name: slow5tools failed"
     diff "$OUT_DIR/promr9dna4khz_lsk110_auto.blow5" "$EXP_DIR/promr9dna4khz_lsk110_auto.blow5" > /dev/null || die "$name: diff failed"
     info "$name"
+
+    i=$((i + 1))
+    name="testcase $i: minion lsk110 4khz"
+    $SLOW5TOOLS degrade "$RAW_DIR/minir9dna4khz_lsk110.blow5" -o "$OUT_DIR/minir9dna4khz_lsk110_auto.blow5" || die "$name: slow5tools failed"
+    diff "$OUT_DIR/minir9dna4khz_lsk110_auto.blow5" "$EXP_DIR/minir9dna4khz_lsk110_auto.blow5" > /dev/null || die "$name: diff failed"
+    info "$name"
 fi
 
 exit 0

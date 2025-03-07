@@ -96,6 +96,12 @@
         SAMPLE_FREQUENCY_4KHZ,\
         SAMPLING_RATE_4KHZ,\
         2),\
+    DATASET_MINION("DNA lsk110 4kHz",\
+        SEQUENCING_KIT_LSK110,\
+        DNA_EXPERIMENT_TYPE,\
+        SAMPLE_FREQUENCY_4KHZ,\
+        SAMPLING_RATE_4KHZ,\
+        3),\
 }
 
 struct dataset {

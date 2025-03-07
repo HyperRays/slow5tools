@@ -27,6 +27,7 @@
 #define SEQUENCING_KIT_RNA004 ("sqk-rna004")
 #define SEQUENCING_KIT_ULK114 ("sqk-ulk114")
 #define SEQUENCING_KIT_LSK110 ("sqk-lsk110")
+#define SEQUENCING_KIT_LSK112 ("sqk-lsk112")
 #define SLOW5_HEADER_DEVICE_TYPE ("device_type")
 #define SLOW5_HEADER_EXPERIMENT_TYPE ("experiment_type")
 #define SLOW5_HEADER_SAMPLE_FREQUENCY ("sample_frequency")
@@ -98,6 +99,12 @@
         2),\
     DATASET_MINION("DNA lsk110 4kHz",\
         SEQUENCING_KIT_LSK110,\
+        DNA_EXPERIMENT_TYPE,\
+        SAMPLE_FREQUENCY_4KHZ,\
+        SAMPLING_RATE_4KHZ,\
+        3),\
+    DATASET_MINION("DNA lsk112 4kHz",\
+        SEQUENCING_KIT_LSK112,\
         DNA_EXPERIMENT_TYPE,\
         SAMPLE_FREQUENCY_4KHZ,\
         SAMPLING_RATE_4KHZ,\

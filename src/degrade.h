@@ -109,6 +109,12 @@
         SAMPLE_FREQUENCY_4KHZ,\
         SAMPLING_RATE_4KHZ,\
         3),\
+    DATASET_PROMETHION("DNA lsk112 4kHz",\
+        SEQUENCING_KIT_LSK112,\
+        DNA_EXPERIMENT_TYPE,\
+        SAMPLE_FREQUENCY_4KHZ,\
+        SAMPLING_RATE_4KHZ,\
+        3),\
 }
 
 struct dataset {

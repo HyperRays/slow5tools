@@ -28,6 +28,7 @@
 #define SEQUENCING_KIT_ULK114 ("sqk-ulk114")
 #define SEQUENCING_KIT_LSK110 ("sqk-lsk110")
 #define SEQUENCING_KIT_LSK112 ("sqk-lsk112")
+#define SEQUENCING_KIT_RAD004 ("sqk-rad004")
 #define SLOW5_HEADER_DEVICE_TYPE ("device_type")
 #define SLOW5_HEADER_EXPERIMENT_TYPE ("experiment_type")
 #define SLOW5_HEADER_SAMPLE_FREQUENCY ("sample_frequency")
@@ -115,6 +116,12 @@
         SAMPLE_FREQUENCY_4KHZ,\
         SAMPLING_RATE_4KHZ,\
         3),\
+    DATASET_PROMETHION("DNA rad004 4kHz",\
+        SEQUENCING_KIT_RAD004,\
+        DNA_EXPERIMENT_TYPE,\
+        SAMPLE_FREQUENCY_4KHZ,\
+        SAMPLING_RATE_4KHZ,\
+        1),\
 }
 
 struct dataset {

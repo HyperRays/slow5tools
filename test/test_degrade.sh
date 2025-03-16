@@ -176,6 +176,12 @@ if [ -z "$bigend" ]; then
     $SLOW5TOOLS degrade "$RAW_DIR/promr10dna4khz_lsk112.blow5" -o "$OUT_DIR/promr10dna4khz_lsk112_auto.blow5" || die "$name: slow5tools failed"
     diff "$OUT_DIR/promr10dna4khz_lsk112_auto.blow5" "$EXP_DIR/promr10dna4khz_lsk112_auto.blow5" > /dev/null || die "$name: diff failed"
     info "$name"
+
+    i=$((i + 1))
+    name="testcase $i: promethion rad004 4khz"
+    $SLOW5TOOLS degrade "$RAW_DIR/promr9dna4khz_rad004.blow5" -o "$OUT_DIR/promr9dna4khz_rad004_auto.blow5" || die "$name: slow5tools failed"
+    diff "$OUT_DIR/promr9dna4khz_rad004_auto.blow5" "$EXP_DIR/promr9dna4khz_rad004_auto.blow5" > /dev/null || die "$name: diff failed"
+    info "$name"
 fi
 
 exit 0

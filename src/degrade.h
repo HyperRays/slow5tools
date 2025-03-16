@@ -121,7 +121,7 @@
         DNA_EXPERIMENT_TYPE,\
         SAMPLE_FREQUENCY_4KHZ,\
         SAMPLING_RATE_4KHZ,\
-        1),\
+        2),\
 }
 
 struct dataset {

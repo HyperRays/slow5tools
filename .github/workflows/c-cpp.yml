@@ -12,7 +12,7 @@ env:
 jobs:
   ubuntu_14:
     name: ubuntu_14
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     container:
       image: ubuntu:14.04
       volumes:
@@ -39,7 +39,7 @@ jobs:
       run: make test
   ubuntu_16:
     name: Ubuntu 16
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     container:
       image: ubuntu:16.04
       volumes:
@@ -68,7 +68,7 @@ jobs:
       run: export zstd=1 && make test
   ubuntu_18:
     name: Ubuntu 18 hdf5 install script
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     container:
       image: ubuntu:18.04
       volumes:
@@ -101,7 +101,9 @@ jobs:
       run: export zstd=1 && ./test/test.sh mem
   ubuntu_20:
     name: Ubuntu 20
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
+    container:
+      image: ubuntu:20.04
     steps:
     - uses: actions/checkout@v2
       with:
@@ -138,9 +140,9 @@ jobs:
       run: sudo apt-get update && sudo apt-get install -y zlib1g-dev
     - name: build
       run: make -j8 disable_hdf5=1
-  ubuntu_20_icc:
-    name: Ubuntu 20 icc
-    runs-on: ubuntu-20.04
+  ubuntu_22_icc:
+    name: Ubuntu 22 icc
+    runs-on: ubuntu-22.04
     steps:
     - uses: actions/checkout@v2
       with:

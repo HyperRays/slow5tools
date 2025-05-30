@@ -105,6 +105,8 @@ jobs:
     container:
       image: ubuntu:20.04
     steps:
+    - name: install git
+      run: apt-get update && apt-get install -y software-properties-common && add-apt-repository ppa:git-core/ppa && apt-get update -y && apt-get install git -y
     - uses: actions/checkout@v2
       with:
         submodules: recursive
@@ -162,7 +164,7 @@ jobs:
         source /opt/intel/oneapi/setvars.sh
         printenv >> $GITHUB_ENV
     - name: build
-      run: autoreconf && ./configure && make CC=icc CXX=icpc -j8
+      run: autoreconf && ./configure --install && make CC=icc CXX=icpc -j8
     - name: test
       run: make test
     - name: build zstd

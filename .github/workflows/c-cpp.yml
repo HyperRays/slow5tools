@@ -111,7 +111,7 @@ jobs:
       with:
         submodules: recursive
     - name: install packages
-      run: sudo apt-get update && sudo apt-get install -y zlib1g-dev libhdf5-dev libzstd-dev
+      run: apt-get update && sudo apt-get install -y zlib1g-dev libhdf5-dev libzstd-dev
     - name: build-gcc
       run: autoreconf && ./configure && make -j8
     - name: test-gcc
@@ -164,7 +164,7 @@ jobs:
         source /opt/intel/oneapi/setvars.sh
         printenv >> $GITHUB_ENV
     - name: build
-      run: autoreconf && ./configure --install && make CC=icc CXX=icpc -j8
+      run: autoreconf --install && ./configure && make CC=icc CXX=icpc -j8
     - name: test
       run: make test
     - name: build zstd

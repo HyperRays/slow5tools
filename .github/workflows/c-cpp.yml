@@ -111,7 +111,7 @@ jobs:
       with:
         submodules: recursive
     - name: install packages
-      run: apt-get update && sudo apt-get install -y zlib1g-dev libhdf5-dev libzstd-dev
+      run: apt-get update && apt-get install -y zlib1g-dev libhdf5-dev libzstd-dev
     - name: build-gcc
       run: autoreconf && ./configure && make -j8
     - name: test-gcc

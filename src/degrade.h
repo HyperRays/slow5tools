@@ -29,6 +29,7 @@
 #define SEQUENCING_KIT_LSK110 ("sqk-lsk110")
 #define SEQUENCING_KIT_LSK112 ("sqk-lsk112")
 #define SEQUENCING_KIT_RAD004 ("sqk-rad004")
+#define SEQUENCING_KIT_NBD114_24 ("sqk-nbd114-24")
 #define SLOW5_HEADER_DEVICE_TYPE ("device_type")
 #define SLOW5_HEADER_EXPERIMENT_TYPE ("experiment_type")
 #define SLOW5_HEADER_SAMPLE_FREQUENCY ("sample_frequency")
@@ -127,6 +128,18 @@
         DNA_EXPERIMENT_TYPE,\
         SAMPLE_FREQUENCY_4KHZ,\
         SAMPLING_RATE_4KHZ,\
+        3),\
+    DATASET_PROMETHION("DNA nbd114-24 4kHz",\
+        SEQUENCING_KIT_NBD114_24,\
+        DNA_EXPERIMENT_TYPE,\
+        SAMPLE_FREQUENCY_4KHZ,\
+        SAMPLING_RATE_4KHZ,\
+        3),\
+    DATASET_PROMETHION("DNA nbd114-24 5kHz",\
+        SEQUENCING_KIT_NBD114_24,\
+        DNA_EXPERIMENT_TYPE,\
+        SAMPLE_FREQUENCY_5KHZ,\
+        SAMPLING_RATE_5KHZ,\
         3),\
 }
 

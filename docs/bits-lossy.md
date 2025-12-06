@@ -1,7 +1,10 @@
-# Bits eliminated in lossy compressions
+# Bits eliminated in lossy compression
+
+For reducing the size of BLOW5 files, we can perform non-reversible lossy compression using `slow5tools degrade`. More details about this compression strategy is available in our [Genome Research publication](https://genome.cshlp.org/content/35/7/1574).
 
 The number of bits eliminated when using `slow5tools degrade` with the default `-b auto` option is documented here.
-slow5tools version column indicates from which version the profile is available. `.` means not yet available.
+
+In the table below, slow5tools version column indicates from which version the profile is available. `.` means not yet available.
 
 | Experiment type | Sequencing Kit   | Device              | Sample frequency | slow5tools version | Bits eliminated |
 | --------------- | ---------------- | ------------------- | ---------------- | ------------------ | --------------- |

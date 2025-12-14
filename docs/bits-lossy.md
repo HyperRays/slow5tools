@@ -16,7 +16,7 @@ In the table below, slow5tools version column indicates from which version the p
 | dna             | sqk-lsk110       | MinION              | 4000             | 1.3.1              | 3               |
 | dna             | sqk-lsk110       | PromethION          | 4000             | 1.3.1              | 2               |
 | dna             | sqk-lsk110       | PromethION  p2_solo | 4000             | 1.3.1              | 2               |
-| dna             | sqk-lsk112       | GridION             | 4000             | 1.3.0              | 3               |
+| dna             | sqk-lsk112       | GridION             | 4000             | 1.3.1              | 3               |
 | dna             | sqk-lsk112       | MinION              | 4000             | 1.3.1              | 3               |
 | dna             | sqk-lsk112       | PromethION          | 4000             | 1.3.1              | 3               |
 | dna             | sqk-lsk112       | PromethION  p2_solo | 4000             | 1.3.1              | 3               |

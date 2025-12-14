@@ -227,4 +227,4 @@ However, note that sometimes this test diff will cause false errors due to base-
 
 ---
 
-As of 2025, now you can further reduce the size of BLOW5 by 30-40% by using lossy compression which has neglagle impact on basecalling/modcalling accuracy. Please refer to the page ["A Guide for Archiving Lossy Data"](archive-lossy.md) for more information.
+As of 2025, now you can further reduce the size of BLOW5 by 30-40% by using lossy compression which has negligible impact on basecalling/modcalling accuracy. Please refer to the page ["A Guide for Archiving Lossy Data"](archive-lossy.md) for more information.

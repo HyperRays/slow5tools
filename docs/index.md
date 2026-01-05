@@ -20,9 +20,9 @@
 
 ## Related links
 
-[SLOW5 for lossless archiving](archive.md)
+[SLOW5 lossless compression for data archiving](archive.md)
 
-[SLOW5 for lossy archiving](archive-lossy.md)
+[SLOW5 lossy compression for data archiving](archive-lossy.md)
 
 [Software that support SLOW5](software.md)
 

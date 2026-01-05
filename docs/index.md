@@ -28,6 +28,4 @@
 
 [Datasets in SLOW5 format](datasets.md)
 
-[SLOW5 specification](https://hasindu2008.github.io/slow5specs)
-
-
+[SLOW5 ecosystem](https://hasindu2008.github.io/slow5)

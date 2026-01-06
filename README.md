@@ -1,3 +1,5 @@
+This branch has an experimental implementation not used anywhere as far as I remember. Can be potentially deleted if confimed not used anywhere.
+
 # slow5tools
 
 Slow5tools is a simple toolkit for converting (FAST5 <-> SLOW5), compressing, viewing, indexing and manipulating data in SLOW5 format.

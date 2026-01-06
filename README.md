@@ -1,3 +1,5 @@
+🟥*bad_fast5* branch is used for https://github.com/hasindu2008/slow5tools/issues/89
+
 # slow5tools
 
 Slow5tools is a simple toolkit for converting (FAST5 <-> SLOW5), compressing, viewing, indexing and manipulating data in SLOW5 format.

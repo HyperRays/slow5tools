@@ -1,3 +1,5 @@
+🟥*enforce_multi_fast5* branch is used in https://github.com/hasindu2008/slow5tools/issues/104
+
 # slow5tools
 
 Slow5tools is a simple toolkit for converting (FAST5 <-> SLOW5), compressing, viewing, indexing and manipulating data in SLOW5 format.

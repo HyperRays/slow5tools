@@ -1,4 +1,4 @@
-🟥*vbz* branch:
+🟥Do NOT delete this *vbz* branch:
 - used in https://doi.org/10.1093/gigascience/giaf118
 - used by https://github.com/hasindu2008/slow5-pod5-bench
 - used in https://doi.org/10.1101/gr.280090.124

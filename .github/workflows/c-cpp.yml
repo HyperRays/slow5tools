@@ -231,9 +231,9 @@ jobs:
       with:
         submodules: recursive
     - name: install packages
-      run: brew install hdf5 autoconf automake zstd
+      run: brew install hdf5 autoconf automake
     - name: build
-      run: autoreconf --install  && ./configure LDFLAGS=-L/opt/homebrew/lib/ CPPFLAGS="-I/opt/homebrew/include/ -I/usr/local/opt/zstd" && make -j8  zstd=1
+      run: scripts/install-zstd.sh && autoreconf --install  && ./configure --enable-localzstd LDFLAGS=-L/opt/homebrew/lib/ CPPFLAGS=-I/opt/homebrew/include/ && make -j8  zstd=1
     - name: test
       run: export zstd=1 && make test
   # arm64:

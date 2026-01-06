@@ -1,4 +1,5 @@
-![#f03c15](https://placehold.it/15/f03c15/000000?text=+)  *interleave_merge* branch used for benchmarks in slow5tools paper
+🟥*interleave_merge* branch:
+- used for benchmarks in slow5tools paper https://doi.org/10.1186/s13059-023-02910-3
 
 # slow5tools
 

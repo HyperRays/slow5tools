@@ -1,4 +1,4 @@
-🟥*interleave_merge* branch:
+🟥Do NOT delete this *interleave_merge* branch:
 - used for benchmarks in slow5tools paper https://doi.org/10.1186/s13059-023-02910-3
 
 # slow5tools

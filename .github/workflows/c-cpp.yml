@@ -171,45 +171,6 @@ jobs:
       run: make clean && make CC=icc CXX=icpc -j8 zstd=1
     - name: test zstd
       run: export zstd=1 && make test
-  # os_x_12:
-  #   name: OSX 12
-  #   runs-on: macos-12
-  #   steps:
-  #   - uses: actions/checkout@v2
-  #     with:
-  #       submodules: recursive
-  #   - name: install packages
-  #     run: brew install hdf5 autoconf automake
-  #   - name: build
-  #     run: autoreconf --install  && ./configure && make -j8
-  #   - name: test
-  #     run: make test
-  # os_x_13:
-  #   name: OSX 13
-  #   runs-on: macos-13
-  #   steps:
-  #   - uses: actions/checkout@v2
-  #     with:
-  #       submodules: recursive
-  #   - name: install packages
-  #     run: brew install hdf5 autoconf automake
-  #   - name: build
-  #     run: autoreconf --install  && ./configure && make -j8
-  #   - name: test
-  #     run: make test
-  # os_x_13_zstd:
-  #   name: OSX 13 zstd
-  #   runs-on: macos-13
-  #   steps:
-  #   - uses: actions/checkout@v2
-  #     with:
-  #       submodules: recursive
-  #   - name: install packages
-  #     run: brew install hdf5 autoconf automake zstd
-  #   - name: build
-  #     run: autoreconf --install  && ./configure && make -j8 zstd=1
-  #   - name: test
-  #     run: export zstd=1 && make test
   os_x_14:
     name: OSX 14
     runs-on: macos-14
@@ -226,6 +187,32 @@ jobs:
   os_x_14_zstd:
     name: OSX 14 zstd
     runs-on: macos-14
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: recursive
+    - name: install packages
+      run: brew install hdf5 autoconf automake
+    - name: build
+      run: scripts/install-zstd.sh && autoreconf --install  && ./configure --enable-localzstd LDFLAGS=-L/opt/homebrew/lib/ CPPFLAGS=-I/opt/homebrew/include/ && make -j8  zstd=1
+    - name: test
+      run: export zstd=1 && make test
+os_x_15:
+    name: OSX 15
+    runs-on: macos-15
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: recursive
+    - name: install packages
+      run: brew install hdf5 autoconf automake
+    - name: build
+      run: autoreconf --install  && ./configure LDFLAGS=-L/opt/homebrew/lib/ CPPFLAGS=-I/opt/homebrew/include/ && make -j8
+    - name: test
+      run: make test
+os_x_15_zstd:
+    name: OSX 15 zstd
+    runs-on: macos-15
     steps:
     - uses: actions/checkout@v2
       with:

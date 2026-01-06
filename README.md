@@ -1,3 +1,8 @@
+🟥*vbz* branch:
+- used in https://doi.org/10.1093/gigascience/giaf118
+- used by https://github.com/hasindu2008/slow5-pod5-bench
+- used in https://doi.org/10.1101/gr.280090.124
+
 # slow5tools
 
 Slow5tools is a simple toolkit for converting (FAST5 <-> SLOW5), compressing, viewing, indexing and manipulating data in SLOW5 format.

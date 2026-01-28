@@ -264,7 +264,7 @@ If the file is intact, the commands exits with 0. Otherwise it exits with a non-
 
 ### skim
 
-Skims through components in a SLOW5/BLOW5 file requested by user (using options) and prints to standard out. If no options are provided, all the SLOW5 fields except the raw signal will be printed to standard out. enum data types are printed as strings. This subprogramme is available form slow5tools v0.7.0 onwards.
+Skims through components in a SLOW5/BLOW5 file requested by user (using options) and prints to standard out. If no options are provided, all the SLOW5 fields except the raw signal will be printed to standard out. enum data types are printed as strings. This subprogramme is available form slow5tools v0.7.0 onwards. Note that while the primary fields are printed in strict order, the order of auxiliary fields are not bound by any strict order.
 
 ```
 slow5tools skim [OPTIONS] file.blow5

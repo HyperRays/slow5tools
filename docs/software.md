@@ -1,9 +1,9 @@
 # Software that supports S/BLOW5
 
-developed by us⚡ </br>
-a fork managed by us🔀 </br>
-contributed by us as a pull request🔼 </br>
-developed by others🌟 </br>
+* developed by us⚡
+* a fork managed by us🔀
+* contributed by us as a pull request🔼
+* developed by others🌟
 
 ## Basecalling
 

@@ -12,7 +12,7 @@ env:
 jobs:
   ubuntu_14:
     name: ubuntu_14
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     container:
       image: ubuntu:14.04
       volumes:
@@ -39,7 +39,7 @@ jobs:
       run: make test
   ubuntu_16:
     name: Ubuntu 16
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     container:
       image: ubuntu:16.04
       volumes:
@@ -68,7 +68,7 @@ jobs:
       run: export zstd=1 && make test
   ubuntu_18:
     name: Ubuntu 18 hdf5 install script
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     container:
       image: ubuntu:18.04
       volumes:
@@ -101,13 +101,17 @@ jobs:
       run: export zstd=1 && ./test/test.sh mem
   ubuntu_20:
     name: Ubuntu 20
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
+    container:
+      image: ubuntu:20.04
     steps:
+    - name: install git
+      run: apt-get update && apt-get install -y software-properties-common && add-apt-repository ppa:git-core/ppa && apt-get update -y && apt-get install git -y
     - uses: actions/checkout@v2
       with:
         submodules: recursive
     - name: install packages
-      run: sudo apt-get update && sudo apt-get install -y zlib1g-dev libhdf5-dev libzstd-dev
+      run: apt-get update && apt-get install -y zlib1g-dev libhdf5-dev libzstd-dev gcc g++ autoconf automake make wget clang
     - name: build-gcc
       run: autoreconf && ./configure && make -j8
     - name: test-gcc
@@ -138,9 +142,9 @@ jobs:
       run: sudo apt-get update && sudo apt-get install -y zlib1g-dev
     - name: build
       run: make -j8 disable_hdf5=1
-  ubuntu_20_icc:
-    name: Ubuntu 20 icc
-    runs-on: ubuntu-20.04
+  ubuntu_22_icc:
+    name: Ubuntu 22 icc
+    runs-on: ubuntu-22.04
     steps:
     - uses: actions/checkout@v2
       with:
@@ -160,51 +164,12 @@ jobs:
         source /opt/intel/oneapi/setvars.sh
         printenv >> $GITHUB_ENV
     - name: build
-      run: autoreconf && ./configure && make CC=icc CXX=icpc -j8
+      run: autoreconf --install && ./configure && make CC=icc CXX=icpc -j8
     - name: test
       run: make test
     - name: build zstd
       run: make clean && make CC=icc CXX=icpc -j8 zstd=1
     - name: test zstd
-      run: export zstd=1 && make test
-  # os_x_12:
-  #   name: OSX 12
-  #   runs-on: macos-12
-  #   steps:
-  #   - uses: actions/checkout@v2
-  #     with:
-  #       submodules: recursive
-  #   - name: install packages
-  #     run: brew install hdf5 autoconf automake
-  #   - name: build
-  #     run: autoreconf --install  && ./configure && make -j8
-  #   - name: test
-  #     run: make test
-  os_x_13:
-    name: OSX 13
-    runs-on: macos-13
-    steps:
-    - uses: actions/checkout@v2
-      with:
-        submodules: recursive
-    - name: install packages
-      run: brew install hdf5 autoconf automake
-    - name: build
-      run: autoreconf --install  && ./configure && make -j8
-    - name: test
-      run: make test
-  os_x_13_zstd:
-    name: OSX 13 zstd
-    runs-on: macos-13
-    steps:
-    - uses: actions/checkout@v2
-      with:
-        submodules: recursive
-    - name: install packages
-      run: brew install hdf5 autoconf automake zstd
-    - name: build
-      run: autoreconf --install  && ./configure && make -j8 zstd=1
-    - name: test
       run: export zstd=1 && make test
   os_x_14:
     name: OSX 14
@@ -219,6 +184,45 @@ jobs:
       run: autoreconf --install  && ./configure LDFLAGS=-L/opt/homebrew/lib/ CPPFLAGS=-I/opt/homebrew/include/ && make -j8
     - name: test
       run: make test
+  os_x_14_zstd:
+    name: OSX 14 zstd
+    runs-on: macos-14
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: recursive
+    - name: install packages
+      run: brew install hdf5 autoconf automake
+    - name: build
+      run: scripts/install-zstd.sh && autoreconf --install  && ./configure --enable-localzstd LDFLAGS=-L/opt/homebrew/lib/ CPPFLAGS=-I/opt/homebrew/include/ && make -j8  zstd=1
+    - name: test
+      run: export zstd=1 && make test
+  os_x_15:
+    name: OSX 15
+    runs-on: macos-15
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: recursive
+    - name: install packages
+      run: brew install hdf5 autoconf automake
+    - name: build
+      run: autoreconf --install  && ./configure LDFLAGS=-L/opt/homebrew/lib/ CPPFLAGS=-I/opt/homebrew/include/ && make -j8
+    - name: test
+      run: make test
+  os_x_15_zstd:
+    name: OSX 15 zstd
+    runs-on: macos-15
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: recursive
+    - name: install packages
+      run: brew install hdf5 autoconf automake
+    - name: build
+      run: scripts/install-zstd.sh && autoreconf --install  && ./configure --enable-localzstd LDFLAGS=-L/opt/homebrew/lib/ CPPFLAGS=-I/opt/homebrew/include/ && make -j8  zstd=1
+    - name: test
+      run: export zstd=1 && make test
   # arm64:
   #   name: ubuntu arm
   #   runs-on: ubuntu-latest

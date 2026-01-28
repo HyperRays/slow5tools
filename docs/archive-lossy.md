@@ -1,6 +1,8 @@
 # A Guide for Archiving Lossy Data
 
-Lossy compression of raw nanopore signal data can be a great way to save disk space without significantly impacting basecalling and modification calling accuracy. This makes it particularly suitable for archiving, especially if you are running short of available disk space. Naturally, one may be concerned that this conversion would significantly deteriorate the quality of their data. To remedy such concerns, this guide outlines a number of sanity checks which when successful give confidence in the lossy conversion.
+Lossy compression of raw nanopore signal data can be a great way to save disk space without significantly impacting basecalling and modification calling accuracy. This makes it particularly suitable for archiving, especially if you are running short of available disk space. For instance, we were running out of disk space in our in-house storage systems at Garvan Institute long read sequencing service. So we lossy compressed all our historical datasets, the original BLOW5 files that consumed 275 TB, reduced to 172 TB after compressed to BLOW5s with lossy compression.
+
+Naturally, one may be concerned that this conversion would significantly deteriorate the quality of their data. Extensive benchmark results on the negligible impact of lossy compression strategy is presented in our [Genome Research publication](https://genome.cshlp.org/content/35/7/1574). To further remedy any concerns, this guide outlines a number of sanity checks which when successful give confidence in the lossy conversion.
 
 ## The Conversion
 
@@ -248,3 +250,24 @@ Then proceed as normal, using
 SLOW5_FILE=SLOW5_SUB
 SLOW5_LOSSY_FILE=SLOW5_LOSSY_SUB
 ```
+
+---
+
+## Citation
+
+
+> Jayasooriya K, Jenner SP, Marasinghe P, Senanayake U, Saadat H, Taubman D, Ragel R, Gamaarachchi H, Deveson IW. A new compression strategy to reduce the size of nanopore sequencing data. Genome Research. 2025 Jul 1;35(7):1574-82. [http://doi.org/10.1101/gr.280090.124](http://doi.org/10.1101/gr.280090.124)
+
+```
+@article{jayasooriya2025new,
+  title={A new compression strategy to reduce the size of nanopore sequencing data},
+  author={Jayasooriya, Kavindu and Jenner, Sasha P and Marasinghe, Pasindu and Senanayake, Udith and Saadat, Hassaan and Taubman, David and Ragel, Roshan and Gamaarachchi, Hasindu and Deveson, Ira W},
+  journal={Genome Research},
+  volume={35},
+  number={7},
+  pages={1574--1582},
+  year={2025},
+  publisher={Cold Spring Harbor Lab}
+}
+```
+

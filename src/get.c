@@ -368,6 +368,9 @@ int get_main(int argc, char **argv, struct program_meta *meta) {
 
             VERBOSE("Fetched %ld reads of %ld", num_ids - db.n_err, num_ids);
 
+            // reset error count
+            db.n_err = 0;
+
             // Print records
             if(benchmark == false){
                 for (int64_t i = 0; i < num_ids; ++ i) {

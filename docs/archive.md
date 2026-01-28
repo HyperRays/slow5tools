@@ -223,3 +223,8 @@ compare_basecalls (){
 ```
 
 However, note that sometimes this test diff will cause false errors due to base-callers providing slightly different outputs in various circumstances (see https://github.com/hasindu2008/slow5tools/issues/70). We recently came through a situation where Guppy 4.4.1 on a system with multiple GPUs (GeForce 3090 and 3070) produced slightly different results, even on the same FAST5 input when run multiple times.
+
+
+---
+
+As of 2025, now you can further reduce the size of BLOW5 by 30-40% by using lossy compression which has negligible impact on basecalling/modcalling accuracy. Please refer to the page ["A Guide for Archiving Lossy Data"](archive-lossy.md) for more information.

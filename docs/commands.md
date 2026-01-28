@@ -264,7 +264,7 @@ If the file is intact, the commands exits with 0. Otherwise it exits with a non-
 
 ### skim
 
-Skims through components in a SLOW5/BLOW5 file requested by user (using options) and prints to standard out. If no options are provided, all the SLOW5 fields except the raw signal will be printed to standard out. enum data types are printed as strings. This subprogramme is available form slow5tools v0.7.0 onwards.
+Skims through components in a SLOW5/BLOW5 file requested by user (using options) and prints to standard out. If no options are provided, all the SLOW5 fields except the raw signal will be printed to standard out. enum data types are printed as strings. This subprogramme is available form slow5tools v0.7.0 onwards. Note that while the primary fields are printed in strict order, the order of auxiliary fields are not bound by any strict order.
 
 ```
 slow5tools skim [OPTIONS] file.blow5
@@ -295,7 +295,7 @@ See below for documentation on `degrade`-specific options. For documentation on 
 *  `-s, --sig-compress compression_type`:<br/>
    Specifies the raw signal compression method used for BLOW5 output. Note: the default value is ex-zd which differs in `view`.
 *  `-b, --bits INT`:<br/>
-   The number of least significant bits to zero then round for each raw signal data point [default value: "auto" (autodetected based on the file header and data)].
+   The number of least significant bits to eliminate by rounding for each raw signal data point [default value: "auto" (autodetected based on the file header and data)]. The auto detected number of bits are as documented [here](bits-lossy.md).
 
 
 ## GLOBAL OPTIONS

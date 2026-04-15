@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=f2s_benchmark
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=64
+#SBATCH --cpus-per-task=256
 #SBATCH --mem=100G                 # 50G input + headroom
 #SBATCH --time=24:00:00
 #SBATCH --output=f2s_benchmark_%j.out

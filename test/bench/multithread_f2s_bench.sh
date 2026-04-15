@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=f2s_benchmark
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=256
+#SBATCH --cpus-per-task=64
 #SBATCH --mem=100G                 # 50G input + headroom
 #SBATCH --time=24:00:00
 #SBATCH --output=f2s_benchmark_%j.out
@@ -18,7 +18,7 @@ if [ "$1" = "--dry-run" ] || [ "$1" = "-n" ]; then
 fi
 
 # THREAD_LIST="1 2 4 8 16 32 64 128 256"
-THREAD_LIST="256 128 64 32"
+THREAD_LIST="64 32 16 8"
 
 FAST5DIR=/mnt/nvme1/soysalm/d4_green_algae_r94/fast5_files/
 OUTPUT_DIR=./run_d4_green_algae_r94/f2s_thread_benchmark

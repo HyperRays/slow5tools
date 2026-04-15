@@ -21,7 +21,7 @@ THREAD_LIST="1 2 4 8 16 32 64 128 256"
 
 FAST5DIR=/mnt/nvme1/soysalm/d4_green_algae_r94/fast5_files/
 OUTPUT_DIR=./run_d4_green_algae_r94/f2s_thread_benchmark
-SLOW5TOOLS=slow5tools
+SLOW5TOOLS=./slow5tools
 
 if [ $DRY_RUN -eq 1 ]; then
     echo ""

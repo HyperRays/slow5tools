@@ -20,7 +20,7 @@ fi
 THREAD_LIST="1 2 4 8 16 32 64 128 256"
 
 FAST5DIR=/mnt/nvme1/soysalm/d4_green_algae_r94/fast5_files/
-OUTPUT_DIR=f2s_thread_benchmark
+OUTPUT_DIR=./run_d4_green_algae_r94/f2s_thread_benchmark
 SLOW5TOOLS=slow5tools
 
 if [ $DRY_RUN -eq 1 ]; then
@@ -31,7 +31,7 @@ if [ $DRY_RUN -eq 1 ]; then
     for num in $THREAD_LIST; do
         echo "/usr/bin/time -v $SLOW5TOOLS f2s $FAST5DIR -p $num --compress zlib --bench 2> $OUTPUT_DIR/$num/timelog"
     done
-    exit 0
+    return 0 2>/dev/null || exit 0
 fi
 
 mkdir -p $OUTPUT_DIR

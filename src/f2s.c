@@ -37,6 +37,7 @@
     HELP_MSG_LOSSLESS \
     HELP_MSG_CONTINUE_F2S \
     HELP_MSG_RETAIN_DIR_STRUCTURE \
+    "    --bench                    benchmark mode: do conversion/compression but skip file I/O\n" \
     HELP_MSG_HELP \
     HELP_FORMATS_METHODS
 
@@ -93,7 +94,7 @@ void f2s_child_worker(opt_t *user_opts, std::vector<std::string>& fast5_files, r
                 slow5_path += slow5_file_name;
                 //fprintf(stderr,"slow5path = %s\n fast5_path = %s\nslow5file = %s\n",slow5_path.c_str(), fast5_files[i].c_str(),slow5file.c_str());
 
-                slow5_file_pointer = fopen(slow5_path.c_str(), "w");
+                slow5_file_pointer = fopen(user_opts->flag_bench ? "/dev/null" : slow5_path.c_str(), "w");
                 // An error occured
                 if (!slow5_file_pointer) {
                     ERROR("File '%s' could not be opened for writing. %s.",
@@ -128,7 +129,7 @@ void f2s_child_worker(opt_t *user_opts, std::vector<std::string>& fast5_files, r
             }else{ // single-fast5
                 if(!slow5_file_pointer_outputdir_single_fast5){
                     slow5_path_outputdir_single_fast5 += "/"+std::to_string(args.starti)+extension;
-                    slow5_file_pointer_outputdir_single_fast5 = fopen(slow5_path_outputdir_single_fast5.c_str(), "w");
+                    slow5_file_pointer_outputdir_single_fast5 = fopen(user_opts->flag_bench ? "/dev/null" : slow5_path_outputdir_single_fast5.c_str(), "w");
                     // An error occured
                     if (!slow5_file_pointer_outputdir_single_fast5) {
                         ERROR("File '%s' could not be opened for writing. %s.",
@@ -156,7 +157,14 @@ void f2s_child_worker(opt_t *user_opts, std::vector<std::string>& fast5_files, r
         else{ // output dir not set hence, writing to file/stdout
             if(call_count==0){
                 slow5_path = "stdout";
-                if(user_opts->arg_fname_out){
+                if(user_opts->flag_bench){
+                    slow5_path = "/dev/null";
+                    slow5_file_pointer = fopen("/dev/null", "wb");
+                    if (!slow5_file_pointer) {
+                        ERROR("Could not open /dev/null. %s.", strerror(errno));
+                        return;
+                    }
+                }else if(user_opts->arg_fname_out){
                     slow5_path = user_opts->arg_fname_out;
                     slow5_file_pointer = fopen(user_opts->arg_fname_out, "wb");
                     if (!slow5_file_pointer) {
@@ -336,6 +344,7 @@ int f2s_main(int argc, char **argv, struct program_meta *meta) {
             {"allow",       no_argument,       NULL, 'a'},  //8
             {"retain",      no_argument,       NULL,  0 },  //9
             {"dump-all",    required_argument, NULL,  0 },  //10
+            {"bench",       no_argument,       NULL,  0 },  //11
             {NULL, 0, NULL, 0 }
     };
 
@@ -387,6 +396,9 @@ int f2s_main(int argc, char **argv, struct program_meta *meta) {
                         break;
                     case 10:
                         user_opts.arg_dump_all = optarg;
+                        break;
+                    case 11:
+                        user_opts.flag_bench = 1;
                         break;
                     default:
                         fprintf(stderr, HELP_SMALL_MSG, argv[0]);
@@ -462,7 +474,7 @@ int f2s_main(int argc, char **argv, struct program_meta *meta) {
     if(fast5_files.size()==1){
         user_opts.num_processes = 1;
     }
-    if(user_opts.num_processes>1 && !user_opts.arg_dir_out){
+    if(user_opts.num_processes>1 && !user_opts.arg_dir_out && !user_opts.flag_bench){
         ERROR("An output directory (-d DIR) must be specified unless the number of  I/O processes is 1 (-p 1). %s","");
         return EXIT_FAILURE;
     }
@@ -481,7 +493,7 @@ int f2s_main(int argc, char **argv, struct program_meta *meta) {
         WARNING("%s", "--retain requires an output directoru (-d DIR) and will be ignored.");
     }
 
-    if(user_opts.arg_dir_out){
+    if(user_opts.arg_dir_out && !user_opts.flag_bench){
         int ret_create_dir = create_dir(user_opts.arg_dir_out);
         if(ret_create_dir == -1){
             ERROR("Output directory %s is not empty. Please remove it or specify another directory.",user_opts.arg_dir_out);

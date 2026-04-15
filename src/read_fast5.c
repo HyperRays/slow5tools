@@ -165,6 +165,11 @@ int add_slow5_auxiliary_attribute(std::string h5t_class_string, std::string slow
                                   slow5_aux_type slow5_class, std::vector<const char *> enum_labels_list_ptrs);
 
 int print_slow5_header(operator_obj* operator_data) {
+    if(*(operator_data->flag_bench)){
+        // Bench mode: skip header write
+        *(operator_data->flag_header_is_written) = 1;
+        return 0;
+    }
     if(slow5_hdr_fwrite(operator_data->slow5File->fp, operator_data->slow5File->header, operator_data->format_out, operator_data->pressMethod) == -1){
         ERROR("Could not write the SLOW5 header to %s", operator_data->slow5File->meta.pathname);
         return -1;
@@ -174,6 +179,17 @@ int print_slow5_header(operator_obj* operator_data) {
 }
 
 int print_record(operator_obj* operator_data) {
+    if(*(operator_data->flag_bench)){
+        // Bench mode: compress/convert the record but discard the result (skip file I/O)
+        size_t read_size;
+        void *read_mem = slow5_rec_to_mem(operator_data->slow5_record, operator_data->slow5File->header->aux_meta, operator_data->format_out, operator_data->press_ptr, &read_size);
+        if(read_mem == NULL){
+            ERROR("Could not convert the SLOW5 record for read id '%s'.", operator_data->slow5_record->read_id);
+            return -1;
+        }
+        free(read_mem);
+        return 0;
+    }
     if(slow5_rec_fwrite(operator_data->slow5File->fp, operator_data->slow5_record, operator_data->slow5File->header->aux_meta, operator_data->format_out, operator_data->press_ptr) == -1){
         ERROR("Could not write the SLOW5 record for read id '%s' to %s.", operator_data->slow5_record->read_id, operator_data->slow5File->meta.pathname);
         return -1;
@@ -246,6 +262,7 @@ int read_fast5(opt_t *user_opts,
     int flag_header_is_written = write_header_flag;
     int flag_allow_run_id_mismatch = user_opts->flag_allow_run_id_mismatch;
     int flag_dump_all = user_opts->flag_dump_all;
+    int flag_bench = user_opts->flag_bench;
 
 
     size_t zero0 = 0;
@@ -258,6 +275,7 @@ int read_fast5(opt_t *user_opts,
     tracker.flag_allow_run_id_mismatch = &flag_allow_run_id_mismatch;
     tracker.flag_header_is_written = &flag_header_is_written;
     tracker.flag_dump_all = &flag_dump_all;
+    tracker.flag_bench = &flag_bench;
     tracker.nreads = &zero0;
     tracker.slow5_record = slow5_rec_init();
     if(tracker.slow5_record == NULL){

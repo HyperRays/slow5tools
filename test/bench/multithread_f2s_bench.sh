@@ -10,11 +10,29 @@
 
 set -x
 
+DRY_RUN=0
+if [ "$1" = "--dry-run" ] || [ "$1" = "-n" ]; then
+    DRY_RUN=1
+    set +x
+    echo "=== DRY RUN — commands will be printed but not executed ==="
+fi
+
 THREAD_LIST="1 2 4 8 16 32 64 128 256"
 
 FAST5DIR=/mnt/nvme1/soysalm/d4_green_algae_r94/fast5_files/
 OUTPUT_DIR=f2s_thread_benchmark
 SLOW5TOOLS=slow5tools
+
+if [ $DRY_RUN -eq 1 ]; then
+    echo ""
+    echo "mkdir -p $OUTPUT_DIR"
+    echo "find $FAST5DIR -name '*.fast5' | xargs du -sb | awk '{sum+=\$1} END {print sum}'"
+    echo ""
+    for num in $THREAD_LIST; do
+        echo "/usr/bin/time -v $SLOW5TOOLS f2s $FAST5DIR -p $num --compress zlib --bench 2> $OUTPUT_DIR/$num/timelog"
+    done
+    exit 0
+fi
 
 mkdir -p $OUTPUT_DIR
 

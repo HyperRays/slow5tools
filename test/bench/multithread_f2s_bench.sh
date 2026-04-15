@@ -42,7 +42,9 @@ mkdir -p $OUTPUT_DIR
 INPUT_BYTES=$(find $FAST5DIR -name "*.fast5" | xargs du -sb | awk '{sum+=$1} END {print sum}')
 echo "Total input size: $INPUT_BYTES bytes"
 
-echo -e "threads\twall_time_hrs\tcpu_usage\tinput_bytes" > $OUTPUT_DIR/results.txt
+if [ ! -f $OUTPUT_DIR/results.txt ]; then
+    echo -e "threads\twall_time_hrs\tcpu_usage\tinput_bytes" > $OUTPUT_DIR/results.txt
+fi
 
 for num in $THREAD_LIST
 do

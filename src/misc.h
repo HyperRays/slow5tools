@@ -56,6 +56,7 @@ typedef struct {
     int flag_continue_merge;
     int flag_bench;
     size_t bench_bytes;
+    size_t bench_raw_signal_bytes;
 
     // Input arguments
     char *arg_fname_in;

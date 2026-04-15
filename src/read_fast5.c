@@ -188,6 +188,7 @@ int print_record(operator_obj* operator_data) {
             return -1;
         }
         *(operator_data->bench_bytes) += read_size;
+        *(operator_data->bench_raw_signal_bytes) += operator_data->slow5_record->len_raw_signal * sizeof(int16_t);
         free(read_mem);
         return 0;
     }
@@ -278,6 +279,7 @@ int read_fast5(opt_t *user_opts,
     tracker.flag_dump_all = &flag_dump_all;
     tracker.flag_bench = &flag_bench;
     tracker.bench_bytes = &user_opts->bench_bytes;
+    tracker.bench_raw_signal_bytes = &user_opts->bench_raw_signal_bytes;
     tracker.nreads = &zero0;
     tracker.slow5_record = slow5_rec_init();
     if(tracker.slow5_record == NULL){

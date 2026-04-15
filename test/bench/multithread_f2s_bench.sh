@@ -43,7 +43,7 @@ INPUT_BYTES=$(find $FAST5DIR -name "*.fast5" | xargs du -sb | awk '{sum+=$1} END
 echo "Total input size: $INPUT_BYTES bytes"
 
 if [ ! -f $OUTPUT_DIR/results.txt ]; then
-    echo -e "threads\twall_time_hrs\tcpu_usage\tinput_bytes\tcompressed_bytes\tcompress_ratio\tthroughput_MB_s" > $OUTPUT_DIR/results.txt
+    echo -e "threads\twall_time_hrs\tcpu_usage\tinput_bytes\traw_signal_bytes\tcompressed_bytes\tcompress_ratio\tthroughput_MB_s" > $OUTPUT_DIR/results.txt
 fi
 
 for num in $THREAD_LIST
@@ -65,13 +65,15 @@ do
     cpu=$(grep "Percent of CPU this job got" $folder/timelog \
         | awk '{print $NF}')
 
-    # Sum compressed bytes from all child processes
-    compressed=$(grep '\[BENCH\] compressed_bytes=' $folder/timelog \
-        | awk -F= '{sum+=$2} END {print sum+0}')
-    ratio=$(awk "BEGIN {if ($compressed > 0) printf \"%.2f\", $INPUT_BYTES / $compressed; else print \"N/A\"}")
-    throughput=$(awk "BEGIN {printf \"%.2f\", ($INPUT_BYTES / 1000000) / ($wall * 3600)}")
+    # Sum compressed and raw signal bytes from all child processes
+    compressed=$(grep '\[BENCH\]' $folder/timelog \
+        | awk '{for(i=1;i<=NF;i++) if($i ~ /^compressed_bytes=/) {split($i,a,"="); sum+=a[2]}} END {print sum+0}')
+    raw_signal=$(grep '\[BENCH\]' $folder/timelog \
+        | awk '{for(i=1;i<=NF;i++) if($i ~ /^raw_signal_bytes=/) {split($i,a,"="); sum+=a[2]}} END {print sum+0}')
+    ratio=$(awk "BEGIN {if ($compressed > 0) printf \"%.2f\", $raw_signal / $compressed; else print \"N/A\"}")
+    throughput=$(awk "BEGIN {printf \"%.2f\", ($raw_signal / 1000000) / ($wall * 3600)}")
 
-    echo -e "$num\t$wall\t$cpu\t$INPUT_BYTES\t$compressed\t$ratio\t$throughput" >> $OUTPUT_DIR/results.txt
+    echo -e "$num\t$wall\t$cpu\t$INPUT_BYTES\t$raw_signal\t$compressed\t$ratio\t$throughput" >> $OUTPUT_DIR/results.txt
 done
 
 echo ""

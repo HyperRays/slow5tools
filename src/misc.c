@@ -63,6 +63,7 @@ void init_opt(opt_t *opt){
     opt->flag_continue_merge = DEFAULT_CONTINUE_MERGE;
     opt->flag_bench = 0;
     opt->bench_bytes = 0;
+    opt->bench_raw_signal_bytes = 0;
 }
 
 int parse_num_threads(opt_t *opt, int argc, char **argv, struct program_meta *meta){

@@ -18,8 +18,8 @@ if [ "$1" = "--dry-run" ] || [ "$1" = "-n" ]; then
 fi
 
 # THREAD_LIST="1 2 4 8 16 32 64 128 256"
-# THREAD_LIST="64 32 16 8"
-THREAD_LIST="128 256"
+THREAD_LIST="64 32 16 8"
+# THREAD_LIST="128 256"
 
 FAST5DIR=/mnt/nvme1/soysalm/d4_green_algae_r94/fast5_files/
 OUTPUT_DIR=./run_d4_green_algae_r94/f2s_thread_benchmark
@@ -43,7 +43,7 @@ INPUT_BYTES=$(find $FAST5DIR -name "*.fast5" | xargs du -sb | awk '{sum+=$1} END
 echo "Total input size: $INPUT_BYTES bytes"
 
 if [ ! -f $OUTPUT_DIR/results.txt ]; then
-    echo -e "threads\twall_time_hrs\tcpu_usage\tinput_bytes" > $OUTPUT_DIR/results.txt
+    echo -e "threads\twall_time_hrs\tcpu_usage\tinput_bytes\tcompressed_bytes\tcompress_ratio\tthroughput_MB_s" > $OUTPUT_DIR/results.txt
 fi
 
 for num in $THREAD_LIST
@@ -65,9 +65,17 @@ do
     cpu=$(grep "Percent of CPU this job got" $folder/timelog \
         | awk '{print $NF}')
 
-    echo -e "$num\t$wall\t$cpu\t$INPUT_BYTES" >> $OUTPUT_DIR/results.txt
+    # Sum compressed bytes from all child processes
+    compressed=$(grep '\[BENCH\] compressed_bytes=' $folder/timelog \
+        | awk -F= '{sum+=$2} END {print sum+0}')
+    ratio=$(awk "BEGIN {if ($compressed > 0) printf \"%.2f\", $INPUT_BYTES / $compressed; else print \"N/A\"}")
+    throughput=$(awk "BEGIN {printf \"%.2f\", ($INPUT_BYTES / 1000000) / ($wall * 3600)}")
+
+    echo -e "$num\t$wall\t$cpu\t$INPUT_BYTES\t$compressed\t$ratio\t$throughput" >> $OUTPUT_DIR/results.txt
 done
 
 echo ""
 echo "=== Results ==="
 cat $OUTPUT_DIR/results.txt
+
+cp -r run_d4_green_algae_r94/f2s_thread_benchmark run_d4_green_algae_r94/f2s_thread_benchmark_bak

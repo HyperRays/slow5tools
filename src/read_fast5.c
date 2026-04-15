@@ -187,6 +187,7 @@ int print_record(operator_obj* operator_data) {
             ERROR("Could not convert the SLOW5 record for read id '%s'.", operator_data->slow5_record->read_id);
             return -1;
         }
+        *(operator_data->bench_bytes) += read_size;
         free(read_mem);
         return 0;
     }
@@ -276,6 +277,7 @@ int read_fast5(opt_t *user_opts,
     tracker.flag_header_is_written = &flag_header_is_written;
     tracker.flag_dump_all = &flag_dump_all;
     tracker.flag_bench = &flag_bench;
+    tracker.bench_bytes = &user_opts->bench_bytes;
     tracker.nreads = &zero0;
     tracker.slow5_record = slow5_rec_init();
     if(tracker.slow5_record == NULL){

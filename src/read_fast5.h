@@ -82,6 +82,7 @@ struct operator_obj {
     int *flag_header_is_written;
     int *flag_dump_all;
     int *flag_bench;
+    size_t *bench_bytes;
     hsize_t* num_read_groups;
     size_t* nreads;
     slow5_file_t* slow5File;

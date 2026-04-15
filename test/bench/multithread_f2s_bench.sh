@@ -58,6 +58,7 @@ do
         -p $num \
         --compress zlib \
         --bench \
+        --allow \
         2> $folder/timelog
 
     wall=$(grep "Elapsed (wall clock) time" $folder/timelog \

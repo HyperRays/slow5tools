@@ -203,10 +203,11 @@ int print_record(operator_obj* operator_data) {
         }
         memcpy(decode_mem, read_mem, read_size);
         size_t decode_size = read_size;
-        // Ensure compress context is set on slow5File for decoding
+        // Ensure slow5File is configured for decoding the binary compressed record
         if(!operator_data->slow5File->compress){
             operator_data->slow5File->compress = slow5_press_init(operator_data->pressMethod);
         }
+        operator_data->slow5File->format = operator_data->format_out;
         slow5_rec_t *decoded_rec = NULL;
         int ret = slow5_decode(&decode_mem, &decode_size, &decoded_rec, operator_data->slow5File);
         clock_gettime(CLOCK_MONOTONIC, &t2);

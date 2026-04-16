@@ -194,15 +194,17 @@ int print_record(operator_obj* operator_data) {
         }
 
         // Bench decompression: decode the compressed record
-        // slow5_decode frees *mem, so pass a duplicate
-        char *decode_mem = (char *)malloc(read_size);
+        // slow5_rec_to_mem returns [record_size (8 bytes)][compressed_data]
+        // slow5_decode expects just [compressed_data], and it frees *mem
+        size_t hdr_size = sizeof(slow5_rec_size_t);
+        size_t decode_size = read_size - hdr_size;
+        char *decode_mem = (char *)malloc(decode_size);
         if(!decode_mem){
             ERROR("Could not allocate memory for decompression bench%s.", "");
             free(read_mem);
             return -1;
         }
-        memcpy(decode_mem, read_mem, read_size);
-        size_t decode_size = read_size;
+        memcpy(decode_mem, (char *)read_mem + hdr_size, decode_size);
         // Ensure slow5File is configured for decoding the binary compressed record
         if(!operator_data->slow5File->compress){
             operator_data->slow5File->compress = slow5_press_init(operator_data->pressMethod);

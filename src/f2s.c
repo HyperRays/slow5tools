@@ -217,7 +217,7 @@ void f2s_child_worker(opt_t *user_opts, std::vector<std::string>& fast5_files, r
         slow5_close(slow5File); //if stdout was used stdout is now closed.
     }
     if(user_opts->flag_bench){
-        fprintf(stderr, "[BENCH] compressed_bytes=%zu raw_signal_bytes=%zu\n", user_opts->bench_bytes, user_opts->bench_raw_signal_bytes);
+        fprintf(stderr, "[BENCH] compressed_bytes=%zu raw_signal_bytes=%zu compress_sec=%.6f decompress_sec=%.6f\n", user_opts->bench_bytes, user_opts->bench_raw_signal_bytes, user_opts->bench_compress_sec, user_opts->bench_decompress_sec);
     }
     INFO("Summary - total fast5: %lu, bad fast5: %lu", readsCount->total_5, readsCount->bad_5_file);
 }

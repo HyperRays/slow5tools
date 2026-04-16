@@ -84,6 +84,8 @@ struct operator_obj {
     int *flag_bench;
     size_t *bench_bytes;
     size_t *bench_raw_signal_bytes;
+    double *bench_compress_sec;
+    double *bench_decompress_sec;
     hsize_t* num_read_groups;
     size_t* nreads;
     slow5_file_t* slow5File;

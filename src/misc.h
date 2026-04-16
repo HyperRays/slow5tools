@@ -57,6 +57,8 @@ typedef struct {
     int flag_bench;
     size_t bench_bytes;
     size_t bench_raw_signal_bytes;
+    double bench_compress_sec;
+    double bench_decompress_sec;
 
     // Input arguments
     char *arg_fname_in;

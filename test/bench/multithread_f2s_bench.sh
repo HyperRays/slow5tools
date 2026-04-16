@@ -57,6 +57,7 @@ do
         $FAST5DIR \
         -p $num \
         --compress zlib \
+        --sig-compress ex-zd \
         --bench \
         --allow \
         2> $folder/timelog

@@ -186,50 +186,49 @@ int print_record(operator_obj* operator_data) {
         // Save raw signal size before slow5_rec_to_mem mutates it
         size_t raw_sig_bytes = operator_data->slow5_record->len_raw_signal * sizeof(int16_t);
 
-        // Ensure slow5File is configured for encode/decode
+        // Bench compression: use shared press_ptr (fast, reused context)
+        clock_gettime(CLOCK_MONOTONIC, &t0);
+        size_t read_size;
+        void *read_mem = slow5_rec_to_mem(operator_data->slow5_record, operator_data->slow5File->header->aux_meta, operator_data->format_out, operator_data->press_ptr, &read_size);
+        clock_gettime(CLOCK_MONOTONIC, &t1);
+        if(read_mem == NULL){
+            ERROR("Could not convert the SLOW5 record for read id '%s'.", operator_data->slow5_record->read_id);
+            return -1;
+        }
+
+        // Bench decompression: slow5_decode expects data without record_size header
+        // slow5_rec_to_mem returns [record_size (8 bytes)][compressed_data]
+        // Ensure slow5File is configured for decoding
         if(!operator_data->slow5File->compress){
             operator_data->slow5File->compress = slow5_press_init(operator_data->pressMethod);
         }
         operator_data->slow5File->format = operator_data->format_out;
 
-        // Bench compression: use slow5_encode (matched API with slow5_decode)
-        clock_gettime(CLOCK_MONOTONIC, &t0);
-        char *enc_mem = NULL;
-        size_t enc_size = 0;
-        int ret = slow5_encode(&enc_mem, &enc_size, operator_data->slow5_record, operator_data->slow5File);
-        clock_gettime(CLOCK_MONOTONIC, &t1);
-        if(ret < 0){
-            ERROR("Could not encode the SLOW5 record for read id '%s'.", operator_data->slow5_record->read_id);
-            return -1;
-        }
-
-        // Bench decompression: slow5_decode expects data without record_size header
-        // slow5_encode returns [record_size (8 bytes)][compressed_data]
         size_t hdr_size = sizeof(slow5_rec_size_t);
-        size_t decode_size = enc_size - hdr_size;
+        size_t decode_size = read_size - hdr_size;
         char *decode_mem = (char *)malloc(decode_size);
         if(!decode_mem){
             ERROR("Could not allocate memory for decompression bench%s.", "");
-            free(enc_mem);
+            free(read_mem);
             return -1;
         }
-        memcpy(decode_mem, enc_mem + hdr_size, decode_size);
+        memcpy(decode_mem, (char *)read_mem + hdr_size, decode_size);
 
         slow5_rec_t *decoded_rec = NULL;
-        ret = slow5_decode(&decode_mem, &decode_size, &decoded_rec, operator_data->slow5File);
+        int ret = slow5_decode(&decode_mem, &decode_size, &decoded_rec, operator_data->slow5File);
         clock_gettime(CLOCK_MONOTONIC, &t2);
         if(ret < 0){
             ERROR("Could not decode the SLOW5 record for read id '%s'.", operator_data->slow5_record->read_id);
-            free(enc_mem);
+            free(read_mem);
             return -1;
         }
         slow5_rec_free(decoded_rec);
 
-        *(operator_data->bench_bytes) += enc_size;
+        *(operator_data->bench_bytes) += read_size;
         *(operator_data->bench_raw_signal_bytes) += raw_sig_bytes;
         *(operator_data->bench_compress_sec) += (t1.tv_sec - t0.tv_sec) + (t1.tv_nsec - t0.tv_nsec) / 1e9;
         *(operator_data->bench_decompress_sec) += (t2.tv_sec - t1.tv_sec) + (t2.tv_nsec - t1.tv_nsec) / 1e9;
-        free(enc_mem);
+        free(read_mem);
         return 0;
     }
     if(slow5_rec_fwrite(operator_data->slow5File->fp, operator_data->slow5_record, operator_data->slow5File->header->aux_meta, operator_data->format_out, operator_data->press_ptr) == -1){

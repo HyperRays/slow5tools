@@ -21,8 +21,8 @@ fi
 THREAD_LIST="32 16"
 # THREAD_LIST="128 256"
 
-FAST5DIR=/mnt/nvme1/soysalm/d3_yeast_r94/fast5_files/
-OUTPUT_DIR=./run_d3_yeast_r94/f2s_thread_benchmark
+FAST5DIR=/mnt/nvme1/soysalm/d4_green_algae_r94/fast5_files/
+OUTPUT_DIR=./run_d4_green_algae_r94/f2s_thread_benchmark
 SLOW5TOOLS=./slow5tools
 
 if [ $DRY_RUN -eq 1 ]; then

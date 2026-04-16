@@ -18,7 +18,7 @@ if [ "$1" = "--dry-run" ] || [ "$1" = "-n" ]; then
 fi
 
 # THREAD_LIST="1 2 4 8 16 32 64 128 256"
-THREAD_LIST="64 32 16"
+THREAD_LIST="32 16"
 # THREAD_LIST="128 256"
 
 FAST5DIR=/mnt/nvme1/soysalm/d4_green_algae_r94/fast5_files

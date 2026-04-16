@@ -9,6 +9,7 @@
 #include <vector>
 
 #include <slow5/slow5.h>
+#include <slow5/slow5_press.h>
 #include "error.h"
 #include "slow5_extra.h"
 
@@ -193,8 +194,19 @@ int print_record(operator_obj* operator_data) {
         }
 
         // Bench decompression: decode the compressed record
-        char *decode_mem = (char *)read_mem;
+        // slow5_decode frees *mem, so pass a duplicate
+        char *decode_mem = (char *)malloc(read_size);
+        if(!decode_mem){
+            ERROR("Could not allocate memory for decompression bench%s.", "");
+            free(read_mem);
+            return -1;
+        }
+        memcpy(decode_mem, read_mem, read_size);
         size_t decode_size = read_size;
+        // Ensure compress context is set on slow5File for decoding
+        if(!operator_data->slow5File->compress){
+            operator_data->slow5File->compress = slow5_press_init(operator_data->pressMethod);
+        }
         slow5_rec_t *decoded_rec = NULL;
         int ret = slow5_decode(&decode_mem, &decode_size, &decoded_rec, operator_data->slow5File);
         clock_gettime(CLOCK_MONOTONIC, &t2);

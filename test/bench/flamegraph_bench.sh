@@ -7,7 +7,6 @@
 #SBATCH --output=f2s_perf_%j.out
 #SBATCH --error=f2s_perf_%j.err
 #SBATCH --partition=bio_part
-#SBATCH --exclusive
 
 set -x
 

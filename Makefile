@@ -5,7 +5,7 @@ CC       = gcc
 CXX      = g++
 AR 		 = ar
 CPPFLAGS += -I slow5lib/include/ -I slow5lib/src
-CFLAGS   += -g -rdynamic -Wall -O2 -fno-omit-frame-pointer
+CFLAGS   += -g -rdynamic -Wall -Og -fno-omit-frame-pointer
 LANGFLAG 	 = -x c++ -std=c++11
 LDFLAGS  += $(LIBS) -lpthread -lz
 BUILD_DIR = build

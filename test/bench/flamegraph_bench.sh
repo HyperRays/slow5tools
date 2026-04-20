@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=f2s_perf
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=31
+#SBATCH --cpus-per-task=32
 #SBATCH --mem=100G
 #SBATCH --time=24:00:00
 #SBATCH --output=f2s_perf_%j.out

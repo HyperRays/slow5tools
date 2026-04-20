@@ -38,6 +38,7 @@
     HELP_MSG_CONTINUE_F2S \
     HELP_MSG_RETAIN_DIR_STRUCTURE \
     "    --bench                    benchmark mode: do conversion/compression but skip file I/O\n" \
+    "    --bench-decompress         benchmark decompression only (implies --bench; skips compression timing)\n" \
     HELP_MSG_HELP \
     HELP_FORMATS_METHODS
 
@@ -217,7 +218,10 @@ void f2s_child_worker(opt_t *user_opts, std::vector<std::string>& fast5_files, r
         slow5_close(slow5File); //if stdout was used stdout is now closed.
     }
     if(user_opts->flag_bench){
-        fprintf(stderr, "[BENCH] compressed_bytes=%zu raw_signal_bytes=%zu compress_sec=%.6f decompress_sec=%.6f\n", user_opts->bench_bytes, user_opts->bench_raw_signal_bytes, user_opts->bench_compress_sec, user_opts->bench_decompress_sec);
+        fprintf(stderr, "[BENCH] mode=%s compressed_bytes=%zu raw_signal_bytes=%zu compress_sec=%.6f decompress_sec=%.6f\n",
+                user_opts->flag_bench_decompress ? "decompress" : "both",
+                user_opts->bench_bytes, user_opts->bench_raw_signal_bytes,
+                user_opts->bench_compress_sec, user_opts->bench_decompress_sec);
     }
     INFO("Summary - total fast5: %lu, bad fast5: %lu", readsCount->total_5, readsCount->bad_5_file);
 }
@@ -348,6 +352,7 @@ int f2s_main(int argc, char **argv, struct program_meta *meta) {
             {"retain",      no_argument,       NULL,  0 },  //9
             {"dump-all",    required_argument, NULL,  0 },  //10
             {"bench",       no_argument,       NULL,  0 },  //11
+            {"bench-decompress", no_argument,  NULL,  0 },  //12
             {NULL, 0, NULL, 0 }
     };
 
@@ -402,6 +407,10 @@ int f2s_main(int argc, char **argv, struct program_meta *meta) {
                         break;
                     case 11:
                         user_opts.flag_bench = 1;
+                        break;
+                    case 12:
+                        user_opts.flag_bench = 1;
+                        user_opts.flag_bench_decompress = 1;
                         break;
                     default:
                         fprintf(stderr, HELP_SMALL_MSG, argv[0]);

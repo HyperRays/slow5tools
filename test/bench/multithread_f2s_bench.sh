@@ -77,8 +77,8 @@ do
         | awk '{for(i=1;i<=NF;i++) if($i ~ /^compress_sec=/) {split($i,a,"="); sum+=a[2]}} END {printf "%.6f", sum+0}')
     decompress_sec=$(grep '\[BENCH\]' $folder/timelog \
         | awk '{for(i=1;i<=NF;i++) if($i ~ /^decompress_sec=/) {split($i,a,"="); sum+=a[2]}} END {printf "%.6f", sum+0}')
-    compress_tp=$(awk "BEGIN {if ($compress_sec > 0) printf \"%.2f\", ($raw_signal / 1000000) / $compress_sec; else print \"N/A\"}")
-    decompress_tp=$(awk "BEGIN {if ($decompress_sec > 0) printf \"%.2f\", ($raw_signal / 1000000) / $decompress_sec; else print \"N/A\"}")
+    compress_tp=$(awk "BEGIN {if ($compress_sec > 0) printf \"%.2f\", ($raw_signal * $num / 1000000) / $compress_sec; else print \"N/A\"}")
+    decompress_tp=$(awk "BEGIN {if ($decompress_sec > 0) printf \"%.2f\", ($raw_signal * $num / 1000000) / $decompress_sec; else print \"N/A\"}")
 
     echo -e "$num\t$wall\t$cpu\t$INPUT_BYTES\t$raw_signal\t$compressed\t$ratio\t$compress_tp\t$decompress_tp" >> $OUTPUT_DIR/results.txt
 done

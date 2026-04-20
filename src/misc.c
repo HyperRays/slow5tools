@@ -62,6 +62,7 @@ void init_opt(opt_t *opt){
     opt->flag_dump_all = DEFAULT_DUMP_ALL;
     opt->flag_continue_merge = DEFAULT_CONTINUE_MERGE;
     opt->flag_bench = 0;
+    opt->flag_bench_decompress = 0;
     opt->bench_bytes = 0;
     opt->bench_raw_signal_bytes = 0;
     opt->bench_compress_sec = 0.0;

@@ -55,6 +55,7 @@ typedef struct {
     int flag_dump_all;
     int flag_continue_merge;
     int flag_bench;
+    int flag_bench_decompress;
     size_t bench_bytes;
     size_t bench_raw_signal_bytes;
     double bench_compress_sec;

@@ -182,23 +182,24 @@ int print_slow5_header(operator_obj* operator_data) {
 int print_record(operator_obj* operator_data) {
     if(*(operator_data->flag_bench)){
         struct timespec t0, t1, t2;
+        int decompress_only = *(operator_data->flag_bench_decompress);
 
-        // Save raw signal size before slow5_rec_to_mem mutates it
         size_t raw_sig_bytes = operator_data->slow5_record->len_raw_signal * sizeof(int16_t);
 
-        // Bench compression: use shared press_ptr (fast, reused context)
-        clock_gettime(CLOCK_MONOTONIC, &t0);
         size_t read_size;
-        void *read_mem = slow5_rec_to_mem(operator_data->slow5_record, operator_data->slow5File->header->aux_meta, operator_data->format_out, operator_data->press_ptr, &read_size);
-        clock_gettime(CLOCK_MONOTONIC, &t1);
+        void *read_mem;
+        if(decompress_only){
+            read_mem = slow5_rec_to_mem(operator_data->slow5_record, operator_data->slow5File->header->aux_meta, operator_data->format_out, operator_data->press_ptr, &read_size);
+        } else {
+            clock_gettime(CLOCK_MONOTONIC, &t0);
+            read_mem = slow5_rec_to_mem(operator_data->slow5_record, operator_data->slow5File->header->aux_meta, operator_data->format_out, operator_data->press_ptr, &read_size);
+            clock_gettime(CLOCK_MONOTONIC, &t1);
+        }
         if(read_mem == NULL){
             ERROR("Could not convert the SLOW5 record for read id '%s'.", operator_data->slow5_record->read_id);
             return -1;
         }
 
-        // Bench decompression: slow5_decode expects data without record_size header
-        // slow5_rec_to_mem returns [record_size (8 bytes)][compressed_data]
-        // Ensure slow5File is configured for decoding
         if(!operator_data->slow5File->compress){
             operator_data->slow5File->compress = slow5_press_init(operator_data->pressMethod);
         }
@@ -215,8 +216,15 @@ int print_record(operator_obj* operator_data) {
         memcpy(decode_mem, (char *)read_mem + hdr_size, decode_size);
 
         slow5_rec_t *decoded_rec = NULL;
-        int ret = slow5_decode(&decode_mem, &decode_size, &decoded_rec, operator_data->slow5File);
-        clock_gettime(CLOCK_MONOTONIC, &t2);
+        int ret;
+        if(decompress_only){
+            clock_gettime(CLOCK_MONOTONIC, &t1);
+            ret = slow5_decode(&decode_mem, &decode_size, &decoded_rec, operator_data->slow5File);
+            clock_gettime(CLOCK_MONOTONIC, &t2);
+        } else {
+            ret = slow5_decode(&decode_mem, &decode_size, &decoded_rec, operator_data->slow5File);
+            clock_gettime(CLOCK_MONOTONIC, &t2);
+        }
         if(ret < 0){
             ERROR("Could not decode the SLOW5 record for read id '%s'.", operator_data->slow5_record->read_id);
             free(read_mem);
@@ -226,7 +234,9 @@ int print_record(operator_obj* operator_data) {
 
         *(operator_data->bench_bytes) += read_size;
         *(operator_data->bench_raw_signal_bytes) += raw_sig_bytes;
-        *(operator_data->bench_compress_sec) += (t1.tv_sec - t0.tv_sec) + (t1.tv_nsec - t0.tv_nsec) / 1e9;
+        if(!decompress_only){
+            *(operator_data->bench_compress_sec) += (t1.tv_sec - t0.tv_sec) + (t1.tv_nsec - t0.tv_nsec) / 1e9;
+        }
         *(operator_data->bench_decompress_sec) += (t2.tv_sec - t1.tv_sec) + (t2.tv_nsec - t1.tv_nsec) / 1e9;
         free(read_mem);
         return 0;
@@ -304,6 +314,7 @@ int read_fast5(opt_t *user_opts,
     int flag_allow_run_id_mismatch = user_opts->flag_allow_run_id_mismatch;
     int flag_dump_all = user_opts->flag_dump_all;
     int flag_bench = user_opts->flag_bench;
+    int flag_bench_decompress = user_opts->flag_bench_decompress;
 
 
     size_t zero0 = 0;
@@ -317,6 +328,7 @@ int read_fast5(opt_t *user_opts,
     tracker.flag_header_is_written = &flag_header_is_written;
     tracker.flag_dump_all = &flag_dump_all;
     tracker.flag_bench = &flag_bench;
+    tracker.flag_bench_decompress = &flag_bench_decompress;
     tracker.bench_bytes = &user_opts->bench_bytes;
     tracker.bench_raw_signal_bytes = &user_opts->bench_raw_signal_bytes;
     tracker.bench_compress_sec = &user_opts->bench_compress_sec;

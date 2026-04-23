@@ -61,7 +61,7 @@ do
         -- $SLOW5TOOLS f2s \
             "$FAST5DIR" \
             -p "$num" \
-            --compress zlib \
+            --compress zstd \
             --bench \
             --allow
 

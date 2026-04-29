@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=f2s_decompress_benchmark
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=256
+#SBATCH --cpus-per-task=128
 #SBATCH --mem=150G                 # 100G input + headroom
 #SBATCH --time=24:00:00
 #SBATCH --output=f2s_decompress_benchmark_%j.out
@@ -16,7 +16,7 @@ if [ "$1" = "--dry-run" ] || [ "$1" = "-n" ]; then
     echo "=== DRY RUN — commands will be printed but not executed ==="
 fi
 
-THREAD_LIST="16 32 64 128 256"
+THREAD_LIST="16 32 64 128"
 
 
 SIG_PRESS_LIST="ex-zd svb-zd"

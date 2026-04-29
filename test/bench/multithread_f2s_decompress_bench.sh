@@ -6,7 +6,6 @@
 #SBATCH --time=24:00:00
 #SBATCH --output=f2s_decompress_benchmark_%j.out
 #SBATCH --error=f2s_decompress_benchmark_%j.err
-#SBATCH --partition=bio_part
 
 set -x
 

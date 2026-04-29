@@ -1,8 +1,8 @@
 #!/bin/bash
 #SBATCH --job-name=f2s_decompress_benchmark
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=32
-#SBATCH --mem=100G                 # 50G input + headroom
+#SBATCH --cpus-per-task=256
+#SBATCH --mem=150G                 # 100G input + headroom
 #SBATCH --time=24:00:00
 #SBATCH --output=f2s_decompress_benchmark_%j.out
 #SBATCH --error=f2s_decompress_benchmark_%j.err
@@ -17,16 +17,20 @@ if [ "$1" = "--dry-run" ] || [ "$1" = "-n" ]; then
     echo "=== DRY RUN — commands will be printed but not executed ==="
 fi
 
-# THREAD_LIST="1 2 4 8 16 32 64 128 256"
-THREAD_LIST="32 16"
-# THREAD_LIST="128 256"
+THREAD_LIST="16 32 64 128 256"
+
 
 SIG_PRESS_LIST="ex-zd svb-zd"
 
 # dataset_label:fast5_dir pairs
 DATASETS=(
-    "d4_green_algae_r94:/mnt/nvme1/soysalm/d4_green_algae_r94/fast5_files/"
-    "d3_yeast_r94:/mnt/nvme1/soysalm/d3_yeast_r94/fast5_files/"
+"d1_sars-cov-2_r94:/mnt/galactica/skuvalekar/genome_data/test/data/d1_sars-cov-2_r94"
+"d2_ecoli_r94:/mnt/galactica/skuvalekar/genome_data/test/data/d2_ecoli_r94"
+"d3_yeast_r94:/mnt/galactica/skuvalekar/genome_data/test/data/d3_yeast_r94"
+"d4_green_algae_r94:/mnt/galactica/skuvalekar/genome_data/test/data/d4_green_algae_r94"
+"d5_human_na12878_r94:/mnt/galactica/skuvalekar/genome_data/test/data/d5_human_na12878_r94"
+"d6_ecoli_r104:/mnt/galactica/skuvalekar/genome_data/test/data/d6_ecoli_r104"
+"d7_saureus_r104:/mnt/galactica/skuvalekar/genome_data/test/data/d7_saureus_r104"
 )
 
 SLOW5TOOLS=./slow5tools

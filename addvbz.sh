@@ -1,0 +1,1 @@
+export HDF5_PLUGIN_PATH=/home/skuvalekar/.local/hdf5/lib/plugin
